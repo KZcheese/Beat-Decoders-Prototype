@@ -4,14 +4,14 @@ public class Track : MonoBehaviour
 {
     public AudioSource audioSource;
     public AudioClip instrument;
-    private TrackSegment[] _segments;
+    private Segment[] _segments;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
     {
-        _segments = GetComponentsInChildren<TrackSegment>();
+        _segments = GetComponentsInChildren<Segment>();
         audioSource.clip = instrument;
-        foreach (TrackSegment segment in _segments)
+        foreach (Segment segment in _segments)
             segment.SetInstrument(audioSource);
         
     }
@@ -21,7 +21,7 @@ public class Track : MonoBehaviour
         double spb = 1.0 / (bpm * 60);
         double currTime = startTime;
         
-        foreach (TrackSegment seg in _segments)
+        foreach (Segment seg in _segments)
         {
             seg.SetInstrument(audioSource);
             seg.PlaySeg(bpm, currTime);

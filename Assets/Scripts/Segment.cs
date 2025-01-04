@@ -1,21 +1,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TrackSegment : MonoBehaviour
+public class Segment : MonoBehaviour
 {
-    private List<bool> _beats;
+    private List<bool> _notes;
     public List<bool> sol;
     private AudioSource _instrument;
 
     public void SetInstrument(AudioSource audioSource)
     {
         _instrument = audioSource;
-        _beats = new List<bool>(sol.Count);
+        _notes = new List<bool>(sol.Count);
     }
     
     public void PlaySeg(int bpm, double startTime)
     {
-        for (int i = 0; i < _beats.Count; i++)
+        for (int i = 0; i < _notes.Count; i++)
         {
             _instrument.PlayScheduled(startTime + (i * bpm));
         }
@@ -23,11 +23,11 @@ public class TrackSegment : MonoBehaviour
 
     public void SetBeats(List<bool> beats)
     {
-        _beats = beats;
+        _notes = beats;
     }
 
     public int GetBeatCount()
     {
-        return _beats.Count;
+        return _notes.Count;
     }
 }
