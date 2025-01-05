@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class TimeLine : MonoBehaviour
+public class Timeline : MonoBehaviour
 {
     private Track[] _tracks;
     public float startDelay = 1.0f;

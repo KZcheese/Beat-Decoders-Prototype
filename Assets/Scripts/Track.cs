@@ -1,19 +1,19 @@
 using UnityEngine;
 
+[RequireComponent(typeof(AudioSource))]
 public class Track : MonoBehaviour
 {
-    public AudioSource audioSource;
-    public AudioClip instrument;
+    private AudioSource _instrument;
     private Segment[] _segments;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
     {
-        _segments = GetComponentsInChildren<Segment>();
-        audioSource.clip = instrument;
-        foreach (Segment segment in _segments)
-            segment.SetInstrument(audioSource);
+        _instrument = GetComponent<AudioSource>();
         
+        _segments = GetComponentsInChildren<Segment>();
+        foreach (Segment segment in _segments)
+            segment.SetInstrument(_instrument);
     }
     
     public void PlayTrack(int bpm, double startTime)
@@ -23,7 +23,7 @@ public class Track : MonoBehaviour
         
         foreach (Segment seg in _segments)
         {
-            seg.SetInstrument(audioSource);
+            seg.SetInstrument(_instrument);
             seg.PlaySeg(bpm, currTime);
             currTime += spb * seg.GetBeatCount();
         }

@@ -1,11 +1,22 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
+[RequireComponent(typeof(Image))]
 public class Segment : MonoBehaviour
 {
     private List<bool> _notes;
     public List<bool> sol;
     private AudioSource _instrument;
+    private Image _image;
+    private Sprite _emptySegment;
+
+    private void Start()
+    {
+        _image = GetComponent<Image>();
+        _emptySegment = _image.sprite;
+    }
 
     public void SetInstrument(AudioSource audioSource)
     {
@@ -21,8 +32,9 @@ public class Segment : MonoBehaviour
         }
     }
 
-    public void SetBeats(List<bool> beats)
+    public void SetBeats(Sprite image, List<bool> beats)
     {
+        _image.sprite = image;
         _notes = beats;
     }
 
