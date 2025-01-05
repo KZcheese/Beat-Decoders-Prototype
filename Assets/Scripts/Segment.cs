@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,6 +10,8 @@ public class Segment : MonoBehaviour
     private AudioSource _instrument;
     private Image _image;
     private Sprite _emptySegment;
+    
+    private HashSet<Segment> _overlappingSegments;
 
     private void Start()
     {
@@ -41,5 +42,33 @@ public class Segment : MonoBehaviour
     public int GetBeatCount()
     {
         return _notes.Count;
+    }
+
+    private Segment ClosestSegment()
+    {   
+        Segment closestSegment = null;
+        float closestDistance = Mathf.Infinity;
+        
+        foreach (Segment segment in _overlappingSegments)
+        {
+            float distance = Vector2.Distance(segment.transform.position, transform.position);
+            
+            if(closestDistance < distance) continue;
+            closestSegment = segment;
+            closestDistance = distance;
+        }
+        return closestSegment;
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        Segment otherSegment = other.GetComponent<Segment>();
+        if (otherSegment) _overlappingSegments.Add(otherSegment);
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        Segment otherSegment = other.GetComponent<Segment>();
+        if (otherSegment) _overlappingSegments.Remove(otherSegment);
     }
 }
