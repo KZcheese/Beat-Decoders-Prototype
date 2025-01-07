@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -6,7 +5,7 @@ public class DragAndDrop : MonoBehaviour
 {
     private Camera _mainCamera;
     private PlayerInputActions _playerInputActions;
-    private Draggable _activeDraggable;
+    private DraggableSegment _activeDraggableSegment;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
     {
@@ -25,20 +24,19 @@ public class DragAndDrop : MonoBehaviour
         
         RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
 
-        _activeDraggable = hit.collider.GetComponent<Draggable>();
-        if(_activeDraggable) _activeDraggable.Pickup();
-        
+        _activeDraggableSegment = hit.collider.GetComponent<DraggableSegment>();
+        if(_activeDraggableSegment) _activeDraggableSegment.Pickup();
     }
     
     private void OnDrop(InputAction.CallbackContext context){
-        if(_activeDraggable) _activeDraggable.Drop();
-        _activeDraggable = null;
+        if(_activeDraggableSegment) _activeDraggableSegment.Drop();
+        _activeDraggableSegment = null;
     }
 
     // Update is called once per frame
     private void Update()
     {
-        if(!_activeDraggable) return;
-        _activeDraggable.Drag(_playerInputActions.Controls.Delta.ReadValue<Vector2>());
+        if(!_activeDraggableSegment) return;
+        _activeDraggableSegment.Drag(_playerInputActions.Controls.Delta.ReadValue<Vector2>());
     }
 }

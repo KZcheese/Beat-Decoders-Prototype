@@ -4,15 +4,15 @@ using UnityEngine;
 public class Track : MonoBehaviour
 {
     private AudioSource _instrument;
-    private Segment[] _segments;
+    private TimelineSegment[] _segments;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
     {
         _instrument = GetComponent<AudioSource>();
         
-        _segments = GetComponentsInChildren<Segment>();
-        foreach (Segment segment in _segments)
+        _segments = GetComponentsInChildren<TimelineSegment>();
+        foreach (TimelineSegment segment in _segments)
             segment.SetInstrument(_instrument);
     }
     
@@ -21,7 +21,7 @@ public class Track : MonoBehaviour
         double spb = 1.0 / (bpm * 60);
         double currTime = startTime;
         
-        foreach (Segment seg in _segments)
+        foreach (TimelineSegment seg in _segments)
         {
             seg.SetInstrument(_instrument);
             seg.PlaySeg(bpm, currTime);
