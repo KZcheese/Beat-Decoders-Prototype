@@ -1,6 +1,4 @@
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
@@ -11,16 +9,16 @@ public class DragAndDrop : MonoBehaviour
     private PlayerInputActions _playerInputActions;
     private DraggableSegment _activeDraggableSegment;
     private GraphicRaycaster _raycaster;
-    
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
     {
         _mainCamera = Camera.main;
         _raycaster = GetComponent<GraphicRaycaster>();
-        
+
         _playerInputActions = new PlayerInputActions();
         _playerInputActions.Enable();
-        
+
         _playerInputActions.Controls.Press.started += OnSelect;
         _playerInputActions.Controls.Press.canceled += OnDrop;
     }
@@ -41,12 +39,13 @@ public class DragAndDrop : MonoBehaviour
         //
         // if (!hit.collider) return;
         // Debug.Log(hit.collider.gameObject.name);
-        
+
         // _activeDraggableSegment = hit.collider.GetComponent<DraggableSegment>();
         // if(_activeDraggableSegment) _activeDraggableSegment.Pickup();
     }
-    
-    private void OnDrop(InputAction.CallbackContext context){
+
+    private void OnDrop(InputAction.CallbackContext context)
+    {
         // if(_activeDraggableSegment) _activeDraggableSegment.Drop();
         // _activeDraggableSegment = null;
     }

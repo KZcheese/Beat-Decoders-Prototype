@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,6 +5,7 @@ using UnityEngine.UI;
 public class SegmentUI : MonoBehaviour
 {
     private Image[] _tiles;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Awake()
     {
@@ -13,7 +13,7 @@ public class SegmentUI : MonoBehaviour
         _tiles = GetComponentsInChildren<Image>(true).Where(i => i != background).ToArray();
     }
 
-    public void UpdateTiles(List<bool> notes)
+    public void UpdateTiles(bool[] notes)
     {
         for (int i = 0; i < _tiles.Length; i++)
         {

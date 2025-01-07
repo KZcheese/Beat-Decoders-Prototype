@@ -3,28 +3,37 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(SegmentUI))]
-public abstract class DraggableSegment : MonoBehaviour, IDragHandler, IEndDragHandler
+public class DraggableSegment : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    public List<bool> notes;
+    public bool[] notes;
     private readonly HashSet<TimelineSegment> _overlappingSegments = new HashSet<TimelineSegment>();
     protected SegmentUI SegmentUI;
+    private Vector2 _startLocation;
+
 
     protected virtual void Start()
     {
         SegmentUI = GetComponent<SegmentUI>();
         SegmentUI.UpdateTiles(notes);
     }
-    
+
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        _startLocation = transform.position;
+    }
+
     public void OnDrag(PointerEventData eventData)
     {
         Vector3 pos = transform.position;
         Vector2 delta = eventData.delta;
         transform.position = new Vector3(pos.x + delta.x, pos.y + delta.y, pos.z);
-        
+
     }
 
     public virtual void OnEndDrag(PointerEventData eventData)
     {
+        transform.position = _startLocation;
+
         if(_overlappingSegments.Count < 1) return;
         TimelineSegment closestSeg = null;
         float currentDistance = float.MaxValue;
@@ -52,6 +61,4 @@ public abstract class DraggableSegment : MonoBehaviour, IDragHandler, IEndDragHa
         TimelineSegment timelineSegment = other.gameObject.GetComponent<TimelineSegment>();
         if(timelineSegment) _overlappingSegments.Remove(timelineSegment);
     }
-
-
 }
