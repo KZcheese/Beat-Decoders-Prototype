@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Image))]
-public class Clip : MonoBehaviour
+public class Clip : Draggable
 {
     public List<bool> notes;
     private Image _image;

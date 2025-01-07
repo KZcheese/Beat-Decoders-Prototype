@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Image))]
-public class Segment : MonoBehaviour
+public class Segment : Draggable
 {
     private List<bool> _notes;
     public List<bool> sol;
