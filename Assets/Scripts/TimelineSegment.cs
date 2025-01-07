@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(SegmentUI))]
 public class TimelineSegment : DraggableSegment
@@ -37,9 +38,9 @@ public class TimelineSegment : DraggableSegment
         return notes.Count;
     }
 
-    public override void Drop()
+    public override void OnEndDrag(PointerEventData eventData)
     {
-        base.Drop();
+        base.OnEndDrag(eventData);
         SetSegment(new List<bool>(_solution.Count));
     }
 }
