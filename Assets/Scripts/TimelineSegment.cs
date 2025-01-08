@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -19,10 +20,17 @@ public class TimelineSegment : DraggableSegment
         _instrument = audioSource;
     }
 
-    public void PlaySeg(int bpm, double startTime)
+    public IEnumerator PlaySeg(double interval, double startTime)
     {
+        double playTime = startTime;
         for (int i = 0; i < notes.Length; i++)
-            _instrument.PlayScheduled(startTime + (i * bpm));
+        {
+            yield return new WaitUntil(() => AudioSettings.dspTime >= playTime);
+            Debug.Log("Playing at: " + playTime);
+            if(notes[i])
+                _instrument.PlayScheduled(startTime + (i * interval));
+            playTime += interval;
+        }
     }
 
     public void SetSegment(bool[] beats)

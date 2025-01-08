@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(AudioSource))]
@@ -16,16 +17,16 @@ public class Track : MonoBehaviour
             segment.SetInstrument(_instrument);
     }
     
-    public void PlayTrack(int bpm, double startTime)
+    public void PlayTrack(double interval, double startTime)
     {
-        double spb = 1.0 / (bpm * 60);
-        double currTime = startTime;
-        
+        double segTime = startTime;
+
         foreach (TimelineSegment seg in _segments)
         {
+            // yield return new WaitUntil(() => AudioSettings.dspTime >= nextStartTime);
             seg.SetInstrument(_instrument);
-            seg.PlaySeg(bpm, currTime);
-            currTime += spb * seg.GetBeatCount();
+            StartCoroutine(seg.PlaySeg(interval, segTime));
+            segTime += interval * seg.GetBeatCount();
         }
     }
 }
