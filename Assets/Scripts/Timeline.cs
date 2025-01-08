@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -62,6 +63,8 @@ public class Timeline : MonoBehaviour
         if(_playingTracks.Count > 0) return;
 
         PlayTimeLine();
-        if(levelEnd) levelEnd.gameObject.SetActive(true);
+
+        bool correct = _tracks.All(t => t.IsCorrect());
+        if(correct && levelEnd) levelEnd.ShowScreen(true);
     }
 }
