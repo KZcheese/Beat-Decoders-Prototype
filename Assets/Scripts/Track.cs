@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -45,7 +46,14 @@ public class Track : MonoBehaviour
     private void OnSegmentEnd(TimelineSegment segment)
     {
         _playingSegments.Remove(segment);
-        if(_playingSegments.Count < 1) onTrackEnd.Invoke(this);
+        if(_playingSegments.Count > 0) return;
+
+        onTrackEnd.Invoke(this);
+    }
+
+    public bool IsCorrect()
+    {
+        return _segments.All(timelineSegment => timelineSegment.IsCorrect());
     }
     
 }

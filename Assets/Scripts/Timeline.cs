@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -57,6 +58,9 @@ public class Timeline : MonoBehaviour
     private void OnTrackEnd(Track track)
     {
         _playingTracks.Remove(track);
-        if(_playingTracks.Count < 1) PlayTimeLine();
+        if(_playingTracks.Count > 0) return;
+
+        PlayTimeLine();
+        Debug.Log(_tracks.All(timelineSegment => timelineSegment.IsCorrect()));
     }
 }

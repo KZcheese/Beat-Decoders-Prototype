@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
@@ -48,6 +49,11 @@ public class TimelineSegment : DraggableSegment
     public int GetBeatCount()
     {
         return notes.Length;
+    }
+
+    public bool IsCorrect()
+    {
+        return notes.SequenceEqual(_solution);
     }
 
     public override void OnEndDrag(PointerEventData eventData)
