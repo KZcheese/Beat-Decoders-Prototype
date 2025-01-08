@@ -38,9 +38,12 @@ public class DraggableSegment : MonoBehaviour, IBeginDragHandler, IDragHandler, 
         TimelineSegment closestSeg = null;
         float currentDistance = float.MaxValue;
 
+        Vector2 pos = AttemptGetCenter(gameObject);
         foreach (TimelineSegment segment in _overlappingSegments)
         {
-            float newSegDist = Vector2.Distance(transform.position, segment.transform.position);
+            Vector2 otherPos = AttemptGetCenter(segment.gameObject);
+            
+            float newSegDist = Vector2.Distance(pos, otherPos);
             if(currentDistance < newSegDist) continue;
 
             closestSeg = segment;
@@ -60,5 +63,18 @@ public class DraggableSegment : MonoBehaviour, IBeginDragHandler, IDragHandler, 
     {
         TimelineSegment timelineSegment = other.gameObject.GetComponent<TimelineSegment>();
         if(timelineSegment) _overlappingSegments.Remove(timelineSegment);
+    }
+
+    /// <summary>
+    /// Attempts to get the collider center of an object, returns its transform position if unavailable.
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
+    private static Vector2 AttemptGetCenter(GameObject obj)
+    {
+        Collider2D collider = obj.GetComponent<Collider2D>();
+        Vector2 pos = obj.transform.position;
+        if(collider) pos = collider.bounds.center;
+        return pos;
     }
 }

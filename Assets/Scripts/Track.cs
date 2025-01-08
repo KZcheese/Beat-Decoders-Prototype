@@ -23,7 +23,6 @@ public class Track : MonoBehaviour
 
         foreach (TimelineSegment seg in _segments)
         {
-            // yield return new WaitUntil(() => AudioSettings.dspTime >= nextStartTime);
             seg.SetInstrument(_instrument);
             StartCoroutine(seg.PlaySeg(interval, segTime));
             segTime += interval * seg.GetBeatCount();
