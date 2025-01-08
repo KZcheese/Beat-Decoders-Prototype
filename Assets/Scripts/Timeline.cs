@@ -50,6 +50,7 @@ public class Timeline : MonoBehaviour
             
             foreach (Track track in _tracks)
                 track.StopTrack();
+            _playingTracks.Clear();
         }
     }
 

@@ -39,6 +39,7 @@ public class Track : MonoBehaviour
     public void StopTrack()
     {
         StopAllCoroutines();
+        _playingSegments.Clear();
     }
 
     private void OnSegmentEnd(TimelineSegment segment)
