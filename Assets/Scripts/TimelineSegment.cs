@@ -26,9 +26,10 @@ public class TimelineSegment : DraggableSegment
         for (int i = 0; i < notes.Length; i++)
         {
             yield return new WaitUntil(() => AudioSettings.dspTime >= playTime);
-            Debug.Log("Playing at: " + playTime);
+
             if(notes[i])
                 _instrument.PlayScheduled(startTime + (i * interval));
+            
             playTime += interval;
         }
     }

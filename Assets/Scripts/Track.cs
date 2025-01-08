@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(AudioSource))]
@@ -6,6 +7,7 @@ public class Track : MonoBehaviour
 {
     private AudioSource _instrument;
     private TimelineSegment[] _segments;
+    private List<Coroutine> _playingSegments = new List<Coroutine>();
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
@@ -27,5 +29,10 @@ public class Track : MonoBehaviour
             StartCoroutine(seg.PlaySeg(interval, segTime));
             segTime += interval * seg.GetBeatCount();
         }
+    }
+
+    public void StopTrack()
+    {
+        StopAllCoroutines();
     }
 }
