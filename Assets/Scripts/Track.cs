@@ -1,13 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(AudioSource))]
 public class Track : MonoBehaviour
 {
     private AudioSource _instrument;
     private TimelineSegment[] _segments;
-    private List<Coroutine> _playingSegments = new List<Coroutine>();
+    private readonly HashSet<TimelineSegment> _playingSegments = new HashSet<TimelineSegment>();
+    public UnityEvent<Track> onTrackEnd;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
@@ -16,7 +18,10 @@ public class Track : MonoBehaviour
         
         _segments = GetComponentsInChildren<TimelineSegment>();
         foreach (TimelineSegment segment in _segments)
+        {
             segment.SetInstrument(_instrument);
+            segment.onSegmentEnd.AddListener(OnSegmentEnd);
+        }
     }
     
     public void PlayTrack(double interval, double startTime)
@@ -25,8 +30,8 @@ public class Track : MonoBehaviour
 
         foreach (TimelineSegment seg in _segments)
         {
-            seg.SetInstrument(_instrument);
             StartCoroutine(seg.PlaySeg(interval, segTime));
+            _playingSegments.Add(seg);
             segTime += interval * seg.GetBeatCount();
         }
     }
@@ -35,4 +40,11 @@ public class Track : MonoBehaviour
     {
         StopAllCoroutines();
     }
+
+    private void OnSegmentEnd(TimelineSegment segment)
+    {
+        _playingSegments.Remove(segment);
+        if(_playingSegments.Count < 1) onTrackEnd.Invoke(this);
+    }
+    
 }

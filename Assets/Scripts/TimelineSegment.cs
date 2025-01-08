@@ -1,12 +1,15 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 
 [RequireComponent(typeof(SegmentUI))]
 public class TimelineSegment : DraggableSegment
 {
     private bool[] _solution;
     private AudioSource _instrument;
+    public UnityEvent<TimelineSegment> onSegmentEnd;
 
     protected override void Start()
     {
@@ -32,6 +35,8 @@ public class TimelineSegment : DraggableSegment
             
             playTime += interval;
         }
+        
+        onSegmentEnd.Invoke(this);
     }
 
     public void SetSegment(bool[] beats)

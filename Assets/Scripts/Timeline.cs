@@ -1,21 +1,29 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Timeline : MonoBehaviour
 {
     private Track[] _tracks;
+    private readonly HashSet<Track> _playingTracks = new HashSet<Track>();
+
     public float startDelay = 0.1f;
     public int bpm = 80;
+    
     public Image playButton;
     private Sprite _playSprite;
     public Sprite stopSprite;
     
     private bool _isPlaying;
+    
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
     {
         _tracks = GetComponentsInChildren<Track>();
+        foreach (Track track in _tracks)
+            track.onTrackEnd.AddListener(OnTrackEnd);
+        
         _playSprite = playButton.sprite;
     }
 
@@ -31,7 +39,10 @@ public class Timeline : MonoBehaviour
             double interval = 1.0 / bpm * 60 / 4.0; // assumes 4/4
 
             foreach (Track track in _tracks)
+            {
                 track.PlayTrack(interval, startTime);
+                _playingTracks.Add(track);
+            }
         }
         else
         {
@@ -40,6 +51,11 @@ public class Timeline : MonoBehaviour
             foreach (Track track in _tracks)
                 track.StopTrack();
         }
+    }
 
+    private void OnTrackEnd(Track track)
+    {
+        _playingTracks.Remove(track);
+        if(_playingTracks.Count < 1) PlayTimeLine();
     }
 }
