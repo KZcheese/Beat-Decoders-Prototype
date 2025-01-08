@@ -13,6 +13,15 @@ public class SegmentUI : MonoBehaviour
         _tiles = GetComponentsInChildren<Image>(true).Where(i => i != background).ToArray();
     }
 
+    public bool[] GetTileStatus()
+    {
+        bool[] status = new bool[_tiles.Length];
+        for (int i = 0; i < _tiles.Length; i++)
+            status[i] = _tiles[i].gameObject.activeSelf;
+
+        return status;
+    }
+
     public void UpdateTiles(bool[] notes)
     {
         for (int i = 0; i < _tiles.Length; i++)

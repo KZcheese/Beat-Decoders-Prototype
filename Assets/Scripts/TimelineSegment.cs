@@ -14,9 +14,10 @@ public class TimelineSegment : DraggableSegment
 
     protected override void Start()
     {
-        _solution = notes;
-        notes = new bool[_solution.Length];
         base.Start();
+        _solution = Notes;
+        Notes = new bool[_solution.Length];
+        SegmentUI.UpdateTiles(Notes);
     }
 
     public void SetInstrument(AudioSource audioSource)
@@ -27,11 +28,11 @@ public class TimelineSegment : DraggableSegment
     public IEnumerator PlaySeg(double interval, double startTime)
     {
         double playTime = startTime;
-        for (int i = 0; i < notes.Length; i++)
+        for (int i = 0; i < Notes.Length; i++)
         {
             yield return new WaitUntil(() => AudioSettings.dspTime >= playTime);
 
-            if(notes[i])
+            if(Notes[i])
                 _instrument.PlayScheduled(startTime + (i * interval));
             
             playTime += interval;
@@ -42,18 +43,18 @@ public class TimelineSegment : DraggableSegment
 
     public void SetSegment(bool[] beats)
     {
-        notes = beats;
-        SegmentUI.UpdateTiles(notes);
+        Notes = beats;
+        SegmentUI.UpdateTiles(Notes);
     }
 
     public int GetBeatCount()
     {
-        return notes.Length;
+        return Notes.Length;
     }
 
     public bool IsCorrect()
     {
-        return notes.SequenceEqual(_solution);
+        return Notes.SequenceEqual(_solution);
     }
 
     public override void OnEndDrag(PointerEventData eventData)

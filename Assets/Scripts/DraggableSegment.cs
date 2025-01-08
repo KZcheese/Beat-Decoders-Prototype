@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 [RequireComponent(typeof(SegmentUI))]
 public class DraggableSegment : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    public bool[] notes;
+    protected bool[] Notes;
     private readonly HashSet<TimelineSegment> _overlappingSegments = new HashSet<TimelineSegment>();
     protected SegmentUI SegmentUI;
     private Vector2 _startLocation;
@@ -14,7 +14,7 @@ public class DraggableSegment : MonoBehaviour, IBeginDragHandler, IDragHandler, 
     protected virtual void Start()
     {
         SegmentUI = GetComponent<SegmentUI>();
-        SegmentUI.UpdateTiles(notes);
+        Notes = SegmentUI.GetTileStatus();
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -50,7 +50,7 @@ public class DraggableSegment : MonoBehaviour, IBeginDragHandler, IDragHandler, 
             currentDistance = newSegDist;
         }
 
-        if(closestSeg) closestSeg.SetSegment(notes);
+        if(closestSeg) closestSeg.SetSegment(Notes);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
